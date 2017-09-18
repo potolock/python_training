@@ -20,21 +20,15 @@ class ishodnik_test(unittest.TestCase):
 
     def test_test_add_group(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.open_groups_page(wd)
         self.create_group(wd, Group(name="jehfeorwijoe", header="ryg3ky4urgfk34utg", footer="3ye2qy3urk3quwyegf"))
-        self.return_to_group_page(wd)
         self.logout(wd)
 
-        def test_test_add_empty_group(self):
-            wd = self.wd
-            self.open_home_page(wd)
-            self.login(wd, username="admin", password="secret")
-            self.open_groups_page(wd)
-            self.create_group(wd, Group(name="", header="", footer=""))
-            self.return_to_group_page(wd)
-            self.logout(wd)
+    def test_test_add_empty_group(self):
+        wd = self.wd
+        self.login(wd, username="admin", password="secret")
+        self.create_group(wd, Group(name="", header="", footer=""))
+        self.logout(wd)
 
     def logout(self, wd):
         wd.find_element_by_link_text("Logout").click()
@@ -43,6 +37,7 @@ class ishodnik_test(unittest.TestCase):
         wd.find_element_by_link_text("group page").click()
 
     def create_group(self, wd, group):
+        self.open_groups_page(wd)
         # init group create
         wd.find_element_by_name("new").click()
         # fill group form
@@ -57,11 +52,13 @@ class ishodnik_test(unittest.TestCase):
         wd.find_element_by_name("group_footer").send_keys(group.footer)
         # submit group creation
         wd.find_element_by_name("submit").click()
+        self.return_to_group_page(wd)
 
     def open_groups_page(self, wd):
         wd.find_element_by_link_text("groups").click()
 
     def login(self, wd, username, password):
+        self.open_home_page(wd)
         wd.find_element_by_name("pass").click()
         wd.find_element_by_name("pass").clear()
         wd.find_element_by_name("pass").send_keys("\\undefined")
